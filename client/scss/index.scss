@@ -5,6 +5,7 @@
 @import 'globals';
 @import 'spinner';
 @import 'variables';
+@import 'transitions';
 
 @keyframes spin { 100% { transform:rotate(360deg); } }
 
@@ -161,23 +162,24 @@ div#app {
 	.invocations {
 		height: 100%;
 		display: flex;
-		flex-grow: 1;
+		overflow: hidden;
 
-		.list {
+		.sidebar {
 			color: $font-color-dark;
-			margin: 0;
-			padding: 0;
+			display: flex;
+			overflow: hidden;
 			min-width: 200px;
 			margin-top: 1px;
-			list-style: none;
 			border-top: 1px solid rgb(61, 73, 93);
 			box-shadow: 0px -1px 0px 0px rgb(43, 53, 68);
+			flex-direction: column;
 			background-color: rgb(53, 64, 82);
 
-			li {
-				cursor: pointer;
-				padding: 16px 10px;
-				border-top: 1px solid rgb(61, 73, 93);
+			.add {
+				height: 63px;
+				padding: 8px;
+				overflow: hidden;
+				flex-shrink: 0;
 				border-bottom: 1px solid rgb(43, 53, 68);
 
 				button {
@@ -198,65 +200,67 @@ div#app {
 				}
 			}
 
-			li:last-child {
-				box-shadow: 0px 1px 0px 0px rgb(61, 73, 93);
-			}
-
-			li:hover {
-				background-color: rgb(47, 57, 73);
-			}
-
-			li.add {
-				padding: 8px;
-			}
-
-			li.add:after, li.add:before {
-				content: none;
-			}
-
-			li.add:hover {
-				cursor: default;
-				background-color: transparent;
-			}
-
-			li.active {
-				border-left: 3px solid $accent-color;
-				padding-left: 7px;
-				background-color: rgb(61, 73, 92);
-			}
-
-			li:before {
-				color: rgb(53, 150, 82);
-				float: right;
-				content: '●';
-				font-size: 20px;
-				margin-top: -5px;
-				margin-right: 3px;
-			}
-
-			li:after {
-				color: rgba(255, 255, 255, 0.1);
-				float: right;
-				content: '●';
-				font-size: 16px;
-				margin-top: -2px;
-				margin-right: -11px;
-			}
-
-			li.failed:before {
-				color: rgb(150, 64, 82);
-			}
-
-			li.running:after {
+			ul {
 				margin: 0;
-				color: $font-color-dark;
-				content: '⛭';
-				animation: spin 4s linear infinite;
+				padding: 0;
+				overflow-y: scroll;
+				list-style: none;
+				margin-right: -17px;
 
-			}
+				li {
+					cursor: pointer;
+					padding: 16px 10px;
+					overflow: hidden;
+					border-top: 1px solid rgb(61, 73, 93);
+					border-bottom: 1px solid rgb(43, 53, 68);
+				}
 
-			li.running:before {
-				content: none;
+				li:last-child {
+					box-shadow: 0px 1px 0px 0px rgb(61, 73, 93);
+				}
+
+				li:hover {
+					background-color: rgb(47, 57, 73);
+				}
+
+				li.active {
+					border-left: 3px solid $accent-color;
+					padding-left: 7px;
+					background-color: rgb(61, 73, 92);
+				}
+
+				li:before {
+					color: rgb(53, 150, 82);
+					float: right;
+					content: '●';
+					font-size: 20px;
+					margin-top: -5px;
+					margin-right: 3px;
+				}
+
+				li:after {
+					color: rgba(255, 255, 255, 0.1);
+					float: right;
+					content: '●';
+					font-size: 16px;
+					margin-top: -2px;
+					margin-right: -11px;
+				}
+
+				li.failed:before {
+					color: rgb(150, 64, 82);
+				}
+
+				li.running:after {
+					margin: 0;
+					color: $font-color-dark;
+					content: '⛭';
+					animation: spin 4s linear infinite;
+				}
+
+				li.running:before {
+					content: none;
+				}
 			}
 		}
 
