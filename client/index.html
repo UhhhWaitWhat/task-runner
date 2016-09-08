@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Task-Runner</title>
+
+		<script src="/js"></script>
+		<link href="/css" rel="stylesheet">
+	</head>
+	<body>
+		<div id="app">
+			<div class="navigation">
+				<h1>Task-Runner</h1>
+
+				<ul class="errors">
+					<li class="socket" v-if="!socket.connected" key="socket">Reconnecting Socket</li>
+					<li v-for="(error, index) in errors" :key="error" v-on:click="removeError(index)">{{ error }}</li>
+				</ul>
+
+				<div class="spinner" v-if="loading">Loading</div>
+
+				<!-- Main Navigation -->
+				<ul class="tasks" v-if="!loading">
+					<li v-for="task in tasks" :key="task.id" :class="{ active: task.active }" v-on:click="selectTask(task.id)">
+						<a href="#">{{ task.name }}</a>
+
+						<div class="popover">
+							<span>Working Directory:<code>{{ task.cwd }}</code></span><br/>
+							<span>Executable:<code>{{ task.script }}</code></span><br/>
+							<span>Arguments:<code v-for="arg in task.args">{{ arg }}</code></span>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+			<!-- Invocation information -->
+			<div class="invocations" v-if="activeInvocation && !loading">
+				<!-- Invocation list -->
+				<ul class="list">
+					<li v-if="!activeTask.running" class="add" key="new">
+						<button v-on:click="startInvocation(activeTask.id)">+</button>
+					</li>
+					<li	v-for="invocation in activeTask.invocations"
+					    v-on:click="selectInvocation(invocation.id)"
+					    :key="invocation.id"
+					    :class="{
+							failed: invocation.exit > 0,
+							running: invocation.exit === null,
+							active: invocation.active
+						}">
+						{{ ((d, p) => p(d.getDate()) + '.' + p(d.getMonth()) + '.' + d.getFullYear() + ' - ' + p(d.getHours()) + ':' + p(d.getMinutes()))(new Date(invocation.start), i => i > 9 ? i : '0' + i) }}
+					</li>
+				</ul>
+
+				<div class="output">
+					<h3 key="heading">Output</h3>
+
+					<span>Duration: {{Math.floor(((activeInvocation.end || now) - activeInvocation.start) / 1000)}}s</span>
+					<span>Exit Code: {{ activeInvocation.exit === null ? '-' : (activeInvocation.exit === 3221225786 ? 'Cancelled' : activeInvocation.exit) }}</span>
+
+					<div class="pre-wrapper">
+						<pre :class="{ stderr: entry.fd === 'stderr' }" v-for="(entry, index) in activeInvocation.output" :key="index"><code>{{ entry.data }}</code></pre>
+					</div>
+				</div>
+			</div>
+			<div v-if="!activeInvocation && !loading" class="invocations-placeholder">
+				<p>This task has not been run yet.</p>
+				<button v-on:click="startInvocation(activeTask.id)">Run</button>
+			</div>
+		</div>
+	</body>
+</html>

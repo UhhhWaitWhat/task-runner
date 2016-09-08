@@ -1,0 +1,44 @@
+@import 'variables';
+
+* {
+	cursor: default;
+	box-sizing: border-box;
+	user-select: none;
+}
+
+a {
+	cursor: pointer;
+}
+
+html {
+	color: $font-color-light;
+	height: 100%;
+	background: $background-page;
+	font-family: 'Open Sans';
+
+	body {
+		height: 100%;
+		margin: 0 auto;
+		padding: 20px;
+		max-width: 1024px;
+	}
+
+	a {
+		text-decoration: none;
+		color: $font-color-light;
+	}
+
+	a:visited {
+		color: $font-color-light;
+	}
+
+	code {
+		color: $font-color-code;
+		cursor: text;
+		padding: 0 8px;
+		user-select: text;
+		font-family: 'DejaVu Sans Mono';
+		border-radius: 2px;
+		background-color: $background-code;
+	}
+}

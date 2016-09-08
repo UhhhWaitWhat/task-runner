@@ -1,0 +1,305 @@
+@import '../../node_modules/normalize.css/normalize';
+
+@import 'fonts';
+@import 'mixins';
+@import 'globals';
+@import 'spinner';
+@import 'variables';
+
+@keyframes spin { 100% { transform:rotate(360deg); } }
+
+div#app {
+	height: 100%;
+	display: flex;
+	box-shadow: 0px 0px 4px -1px rgba(0,0,0,0.75);
+	flex-direction: column;
+	background-color: $background-light;
+
+	ul.errors {
+		float: right;
+		margin: 25px;
+		padding: 0;
+		overflow: hidden;
+		list-style: none;
+		border-top-right-radius: 3px;
+		border-bottom-right-radius: 3px;
+
+		li {
+			color: $font-color-light;
+			padding: 8px;
+			min-width: 250px;
+			border-top: 1px solid #ffa4a4;
+			border-left: 3px solid rgb(232, 25, 96);
+			border-bottom: 1px solid rgb(239, 82, 82);
+			background-color: rgb(255, 136, 136);
+		}
+
+		li:after {
+			float: right;
+			cursor: pointer;
+			content: '✖';
+			font-size: 11px;
+			line-height: 19px;
+			padding-right: 3px;
+			vertical-align: middle;
+		}
+
+		li.socket:after {
+			cursor: default;
+			content: '⛭';
+			font-size: 14px;
+			animation: spin 2s linear infinite;
+			padding-right: 0;
+		}
+	}
+
+	.navigation {
+		padding: 25px 25px 0 25px;
+		flex-grow: 1;
+		background-color: $background-lighter;
+
+		h1 {
+			margin: 25px;
+			display: inline-block;
+			font-size: 22px;
+			color: $font-color-light-bold;
+		}
+
+		ul.tasks {
+			@include clearfix;
+
+			list-style: none;
+			padding: 0;
+			margin: 0;
+
+			li {
+				float: left;
+				padding: 20px 0;
+				margin: 0 24px;
+				cursor: pointer;
+				border-bottom: 3px solid transparent;
+
+				a {
+					text-transform: uppercase;
+					font-weight: bold;
+					font-size: 11px;
+					color: $font-color-light-bold;
+				}
+
+				.popover {
+					color: $font-color-dark-bold;
+					z-index: 1;
+					opacity: 0;
+					padding: 12px 20px;
+					position: absolute;
+					font-size: 14px;
+					margin-top: 10px;
+					transition: opacity 0.2s;
+					line-height: 2em;
+					margin-left: -10px;
+					border-radius: $border-radius;
+					pointer-events: none;
+					background-color: $background-dark;
+
+					code {
+						margin: 0 4px;
+					}
+				}
+
+				.popover:before {
+					content: '';
+
+					top: -8px;
+					width: 0;
+					height: 0;
+					display: block;
+					position: absolute;
+					margin-left: 8px;
+
+					border-left: 8px solid transparent;
+					border-right: 8px solid transparent;
+					border-bottom: 8px solid $background-dark;
+				}
+			}
+
+			li.active {
+				border-bottom: 3px solid $accent-color;
+			}
+
+			li a:hover + .popover {
+				opacity: 1;
+				display: block;
+				transition-delay: 0.75s;
+			}
+		}
+	}
+
+	.invocations-placeholder {
+		width: 100%;
+		color: $font-color-light-bold;
+		height: 100%;
+		padding: 45px;
+		flex-grow: 1;
+		font-size: 16px;
+		text-align: center;
+		font-weight: bold;
+		border-top: 1px solid $border-light;
+		box-shadow: 0px -1px 0px 0px $border-dark;
+
+		button {
+			color: $font-color-dark-bold;
+			border: none;
+			cursor: pointer;
+			padding: 15px 50px;
+			font-size: 14px;
+			border-radius: $border-radius;
+			text-transform: uppercase;
+			background-color: rgb(123, 139, 166);
+		}
+	}
+
+	.invocations {
+		height: 100%;
+		display: flex;
+		flex-grow: 1;
+
+		.list {
+			color: $font-color-dark;
+			margin: 0;
+			padding: 0;
+			min-width: 200px;
+			margin-top: 1px;
+			list-style: none;
+			border-top: 1px solid rgb(61, 73, 93);
+			box-shadow: 0px -1px 0px 0px rgb(43, 53, 68);
+			background-color: rgb(53, 64, 82);
+
+			li {
+				cursor: pointer;
+				padding: 16px 10px;
+				border-top: 1px solid rgb(61, 73, 93);
+				border-bottom: 1px solid rgb(43, 53, 68);
+
+				button {
+					color: $font-color-dark;
+					font-size: 20px;
+					font-weight: bold;
+					width: 100%;
+					border: none;
+					margin: 0 auto;
+					cursor: pointer;
+					padding: 12px;
+					border-radius: $border-radius;
+					background-color: transparent;
+				}
+
+				button:hover {
+					background-color: rgba(0, 0, 0, 0.25);
+				}
+			}
+
+			li:last-child {
+				box-shadow: 0px 1px 0px 0px rgb(61, 73, 93);
+			}
+
+			li:hover {
+				background-color: rgb(47, 57, 73);
+			}
+
+			li.add {
+				padding: 8px;
+			}
+
+			li.add:after, li.add:before {
+				content: none;
+			}
+
+			li.add:hover {
+				cursor: default;
+				background-color: transparent;
+			}
+
+			li.active {
+				border-left: 3px solid $accent-color;
+				padding-left: 7px;
+				background-color: rgb(61, 73, 92);
+			}
+
+			li:before {
+				color: rgb(53, 150, 82);
+				float: right;
+				content: '●';
+				font-size: 20px;
+				margin-top: -5px;
+				margin-right: 3px;
+			}
+
+			li:after {
+				color: rgba(255, 255, 255, 0.1);
+				float: right;
+				content: '●';
+				font-size: 16px;
+				margin-top: -2px;
+				margin-right: -11px;
+			}
+
+			li.failed:before {
+				color: rgb(150, 64, 82);
+			}
+
+			li.running:after {
+				margin: 0;
+				color: $font-color-dark;
+				content: '⛭';
+				animation: spin 4s linear infinite;
+
+			}
+
+			li.running:before {
+				content: none;
+			}
+		}
+
+		.output {
+			display: flex;
+			padding: 0 20px 20px 20px;
+			flex-grow: 1;
+			margin-top: 1px;
+			border-top: 1px solid $border-light;
+			box-shadow: 0px -1px 0px 0px $border-dark;
+			border-left: 1px solid $border-dark;
+			flex-direction: column;
+
+			span {
+				margin-bottom: 8px;
+			}
+
+			.pre-wrapper {
+				padding: 20px 0;
+				overflow: auto;
+				flex-grow: 1;
+				margin-top: 8px;
+				border-radius: $border-radius;
+				background-color: $background-code;
+
+				pre {
+					margin: 0;
+					padding: 0 20px;
+				}
+
+				pre.stderr {
+					background-color: rgb(75, 49, 62);
+				}
+
+				pre:hover {
+					background-color: rgb(49, 58, 72);
+				}
+
+				code {
+					padding: 0;
+					background-color: transparent;
+				}
+			}
+		}
+	}
+}
