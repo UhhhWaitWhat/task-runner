@@ -2,12 +2,13 @@
   "name": "task-runner",
   "version": "0.0.0",
   "description": "Run shell-scripts via a web-interface",
+  "license": "BSD-3-Clause",
   "main": "index.js",
+  "bin": "bin.js",
   "author": {
     "name": "Florian Albertz",
     "url": "https://github.com/PaulAvery/"
   },
-  "license": "BSD-3-Clause",
   "dependencies": {
     "co": "^4.6.0",
     "knex": "^0.11.10",

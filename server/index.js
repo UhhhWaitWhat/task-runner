@@ -12,15 +12,9 @@ function bail(message) {
 	process.exit(1);
 }
 
-module.exports = (koaServer, socketServer, onExit) => {
-	/* Define input data */
-	let dbFile = path.resolve(process.cwd(), process.env.DATABASE || 'tasks.db');
-	let taskFile = path.resolve(process.cwd(), process.env.TASKFILE || 'tasks.json');
-
-	/* Load the tasks from the configuration file */
+module.exports = (taskData, db, koaServer, socketServer, onExit) => {
+	/* Validate tasks from the configuration file */
 	try {
-		var taskData = JSON.parse(fs.readFileSync(taskFile, 'utf8'));
-
 		validate(taskData);
 	} catch(e) {
 		bail(`Failed to load task definitions:\n\n${e.message}`);
@@ -31,7 +25,7 @@ module.exports = (koaServer, socketServer, onExit) => {
 		client: 'sqlite3',
 		useNullAsDefault: true,
 		connection: {
-			filename: dbFile
+			filename: db
 		}
 	});
 
