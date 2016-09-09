@@ -48,4 +48,11 @@ html {
 		border-radius: 2px;
 		background-color: $background-code;
 	}
+
+	pre {
+		tab-size: 4;
+		-ms-tab-size: 4;
+		-moz-tab-size: 4;
+		-webkit-tab-size: 4;
+	}
 }
