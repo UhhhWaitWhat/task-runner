@@ -41,6 +41,9 @@ html {
 		cursor: text;
 		padding: 0 8px;
 		user-select: text;
+		-ms-user-select: text;
+		-moz-user-select: text;
+		-webkit-user-select: text;
 		font-family: 'Noto Mono';
 		border-radius: 2px;
 		background-color: $background-code;

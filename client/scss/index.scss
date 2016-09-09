@@ -140,7 +140,7 @@ div#app {
 		color: $font-color-light-bold;
 		height: 100%;
 		padding: 45px;
-		flex-grow: 1;
+		overflow: hidden;
 		font-size: 16px;
 		text-align: center;
 		font-weight: bold;
@@ -268,6 +268,7 @@ div#app {
 			display: flex;
 			padding: 0 20px 20px 20px;
 			flex-grow: 1;
+			min-width: 0px;
 			margin-top: 1px;
 			border-top: 1px solid $border-light;
 			box-shadow: 0px -1px 0px 0px $border-dark;
@@ -297,6 +298,10 @@ div#app {
 
 				pre:hover {
 					background-color: rgb(49, 58, 72);
+				}
+
+				pre:last-child {
+					margin-bottom: 20px;
 				}
 
 				code {
