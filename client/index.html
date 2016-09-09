@@ -46,7 +46,7 @@
 				<div class="invocations" v-if="activeInvocation && !loading">
 					<div class="sidebar">
 						<transition name="collapse">
-							<div v-if="!activeTask.running" class="add">
+							<div v-show="!activeTask.running" class="add">
 								<button v-on:click="startInvocation(activeTask.id)">+</button>
 							</div>
 						</transition>
