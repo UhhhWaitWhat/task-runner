@@ -17,12 +17,20 @@
 }
 
 .flex-enter {
+	padding-bottom: 0px !important;
+	padding-top: 0px !important;
 	height: 0px !important;
 }
 
 .flex-enter-active {
-	transition: height 0.2s;
-	transition-delay: 0.5s;
+	transition: height 0.2s 0.5s, padding 0.1s 0.5s;
+}
+
+.flex-leave-active {
+	transition: height 0.2s, padding 0.1s;
+	padding-bottom: 0px !important;
+	padding-top: 0px !important;
+	height: 0px !important;
 }
 
 .collapse-enter {

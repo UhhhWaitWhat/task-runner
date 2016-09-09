@@ -41,6 +41,14 @@
 				</transition>
 			</div>
 
+			<!-- Placeholder if task was not run yet -->
+			<transition name="flex">
+				<div v-if="!activeInvocation && !loading" class="invocations-placeholder">
+					<p>This task has not been run yet.</p>
+					<button v-on:click="startInvocation(activeTask.id)">Run</button>
+				</div>
+			</transition>
+
 			<!-- Invocation information -->
 			<transition name="flex">
 				<div class="invocations" v-if="activeInvocation && !loading">
@@ -76,13 +84,6 @@
 							<pre :class="{ stderr: entry.fd === 'stderr' }" v-for="(entry, index) in activeInvocation.output" :key="index"><code>{{ entry.data }}</code></pre>
 						</div>
 					</div>
-				</div>
-			</transition>
-
-			<transition name="flex">
-				<div v-if="!activeInvocation && !loading" class="invocations-placeholder">
-					<p>This task has not been run yet.</p>
-					<button v-on:click="startInvocation(activeTask.id)">Run</button>
 				</div>
 			</transition>
 		</div>
