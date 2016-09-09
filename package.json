@@ -14,6 +14,8 @@
     "knex": "^0.11.10",
     "koa": "^1.2.1",
     "koa-bodyparser": "^2.2.0",
+    "koa-compose": "^2.4.0",
+    "koa-etag": "^2.1.1",
     "koa-route": "^2.4.2",
     "koa-send": "^3.2.0",
     "node-sass": "^3.8.0",

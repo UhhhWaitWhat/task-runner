@@ -28,6 +28,6 @@ module.exports = knex => {
 				last.then(() => knex.transaction(next))
 					.then(() => knex.insert({ id: latest + i + 1 }).into('migrations')),
 			Promise.resolve()
-		);
+		).then(() => knex);
 	});
 };

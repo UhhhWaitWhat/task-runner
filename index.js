@@ -1,91 +1,79 @@
-const fs = require('fs');
 const ws = require('ws');
 const koa = require('koa');
-const path = require('path');
 const http = require('http');
-const send = require('koa-send');
-const sass = require('node-sass');
-const route = require('koa-route');
-const rollup = require('rollup');
-const replace = require('rollup-plugin-replace');
-const resolve = require('rollup-plugin-node-resolve');
-const commonjs = require('rollup-plugin-commonjs');
+const etag = require('koa-etag');
 const bodyparser = require('koa-bodyparser');
 
-module.exports = (tasks, { port, debug, database }) => {
-	/* Create http and socket server */
+const logic = require('./server/logic');
+const assets = require('./server/assets');
+const database = require('./server/database');
+const migrations = require('./server/migrations');
+
+module.exports = (data, { port, dbFile, timeout }) => {
+	/* Allow graceful shutdown */
+	let beforeExit = [];
+	let registerExit = f => beforeExit.push(f);
+
+	/* Create http, web and socket server as well as database */
+	let db = database(dbFile);
+	let app = koa();
 	let server = http.createServer();
 	let wsServer = new ws.Server({ server });
 
-	/* Create webserver */
-	let app = koa();
-	app.use(bodyparser());
+	/* Define a function to gracefully shut down everything */
+	let gracefulExit = reason => {
+		/* Prevent calling this multiple times */
+		gracefulExit = () => {};
+		console.log(`Exiting: ${reason}`);
 
-	/* Add routes for js and css, as well as the default html frame */
-	app.use(route.get('/', function* () {
-		let file = path.join(__dirname, 'client/index.html');
+		/* Do anything that was registered to run before shutdown */
+		let all = Promise.all(beforeExit.map(e => e()));
 
-		this.type = 'text/html';
-		this.body = fs.createReadStream(file);
-	}));
-
-	app.use(route.get('/js', function* () {
-		let file = path.join(__dirname, 'client/js/index.js');
-
-		this.type = 'application/javascript';
-		this.body = yield rollup.rollup({
-			entry: file,
-			plugins: [
-				replace({ 'process.env.NODE_ENV': debug ? 'development' : 'production', 'process.env.VUE_ENV': 'client' }),
-				resolve({ jsnext: true }),
-				commonjs()
-			]
-		}).then(d => d.generate().code);
-	}));
-
-	app.use(route.get('/css', function* () {
-		let file = path.join(__dirname, 'client/scss/index.scss');
-
-		this.type = 'text/css';
-		this.body = yield new Promise((res, rej) => sass.render({ file }, (e, d) => e ? rej(e) : res(d.css)));
-	}));
-
-	app.use(function* (next) {
-		yield send(this, '/' + this.path.split('/').slice(2).join('/'), { root: path.join(__dirname, 'client/fonts') });
-		yield next;
-	});
-
-	/* Try to shut down gracefully */
-	let exit = [];
-	let exiting = false;
-	let gracefulExit = signal => {
-		if(!exiting) {
-			exiting = true;
-			console.log(`Exiting: Received ${signal}`);
-
-			Promise.all(exit.map(e => e())).then(
-				() => process.exit(),
-				e => {
-					console.error(e);
-					process.exit(1);
-				}
-			);
-
+		/* Prevent a blocking handler from fucking up our shutdown */
+		let max = new Promise((res, rej) => {
 			setTimeout(() => {
-				console.error('Timeout of 10 seconds passed. Shutting down immediately');
-				process.exit();
-			}, 10000);
-		}
+				rej(`Timeout of ${timeout / 1000} seconds passed. Shutting down immediately`);
+			}, timeout);
+		});
+
+		Promise.race([all, max])
+			.then(() => db.destroy())
+			.then(() => process.exit())
+			.catch(e => {
+				console.error(e);
+				process.exit(1);
+			});
 	};
 
-	process.on('SIGTERM', () => gracefulExit('SIGTERM'));
-	process.on('SIGQUIT', () => gracefulExit('SIGQUIT'));
-	process.on('SIGINT', () => gracefulExit('SIGINT'));
+	/* Use some basic middleware */
+	app.use(etag());
+	app.use(bodyparser());
 
-	/* Load all businesslogic */
-	require('./server')(tasks, database, app, wsServer, p => exit.push(p));
+	/* Load our asset loading logic (js, css, static assets and html) */
+	app.use(assets);
 
-	/* Boot the thing up */
-	server.on('request', app.callback());
-	server.listen(port, () => console.log(`Started on port ${port}`));
+	/* Wait for all migrations */
+	migrations(db).then(() => {
+		/* Load all business logic */
+		logic({
+			data,
+			exit: registerExit,
+			server: app,
+			socket: wsServer,
+			database: db
+		});
+
+		/* Register our own signal handlers */
+		process.on('SIGTERM', () => gracefulExit('SIGTERM'));
+		process.on('SIGQUIT', () => gracefulExit('SIGQUIT'));
+		process.on('SIGINT', () => gracefulExit('SIGINT'));
+
+		/* Boot the thing up */
+		server.on('request', app.callback());
+		server.listen(port, () => console.log(`Started on port ${port}`));
+	})
+	.catch(e => {
+		console.error(`Initialization failed:\n\n${e}`);
+		process.exit(1);
+	});
 };

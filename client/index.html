@@ -65,7 +65,7 @@
 							    v-on:click="selectInvocation(invocation.id)"
 							    :key="invocation.id"
 							    :class="{
-									failed: invocation.exit > 0,
+									failed: invocation.exit !== 0,
 									running: invocation.exit === null,
 									active: invocation.active
 								}">

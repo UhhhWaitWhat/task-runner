@@ -1,6 +1,6 @@
 const EventEmitter = require('events').EventEmitter;
 
-module.exports = (taskData, knex, onExit) => {
+module.exports = (data, knex, onExit) => {
 	let Invocation = require('./invocation')(knex, onExit);
 	let Task = require('./task')(Invocation);
 
@@ -9,7 +9,7 @@ module.exports = (taskData, knex, onExit) => {
 			super();
 
 			/* Instantiate all tasks */
-			this.taskStore = taskData.map(data => new Task(data)).reduce((c, t) => { c[t.id] = t; return c; }, {});
+			this.taskStore = taskData.map(d => new Task(d)).reduce((c, t) => { c[t.id] = t; return c; }, {});
 		}
 
 		/* Get a single task */
@@ -50,5 +50,5 @@ module.exports = (taskData, knex, onExit) => {
 		}
 	}
 
-	return new Tasks(taskData);
+	return new Tasks(data);
 };

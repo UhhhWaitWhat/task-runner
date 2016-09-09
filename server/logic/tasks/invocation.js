@@ -67,9 +67,9 @@ module.exports = (knex, onExit) => {
 			});
 
 			let done = new Promise(res => {
-				proc.on('exit', code => {
+				proc.on('exit', (code, signal) => {
 					this.end = Date.now();
-					this.exit = code;
+					this.exit = code === null ? signal : code;
 
 					this.emit('end', code);
 					res();
