@@ -17,7 +17,7 @@ You can then run any of these tasks through a web UI:
 ![Screenshot](scrot.png)
 
 ## Setup
-To get started, simply clone this repository, run `npm install -g` and then start the application via `task-runner`.
+To get started, simply install this package (`npm install -g @paulavery/task-runner`) and then start the application via `task-runner`.
 
 You may set the following environment variables to configure the application:
 

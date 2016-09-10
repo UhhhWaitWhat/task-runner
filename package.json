@@ -1,5 +1,5 @@
 {
-  "name": "task-runner",
+  "name": "@paulavery/task-runner",
   "version": "1.0.0",
   "description": "Run shell-scripts via a web-interface",
   "license": "BSD-3-Clause",
