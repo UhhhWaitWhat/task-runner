@@ -14,7 +14,7 @@ You may define tasks in a `tasks.json` file:
 ```
 
 You can then run any of these tasks through a web UI:
-![Screenshot](scrot.png)
+![Screenshot](./scrot.png)
 
 ## Setup
 To get started, simply install this package (`npm install -g @paulavery/task-runner`) and then start the application via `task-runner`.

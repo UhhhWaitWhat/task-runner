@@ -9,6 +9,10 @@
     "name": "Florian Albertz",
     "url": "https://github.com/PaulAvery/"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PaulAvery/task-runner"
+  },
   "scripts": {
     "test": "eslint .",
     "start": "./bin.js"
