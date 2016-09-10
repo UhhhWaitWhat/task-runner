@@ -17,7 +17,7 @@ You can then run any of these tasks through a web UI:
 ![Screenshot](scrot.png)
 
 ## Setup
-To get started, simply clone this repository, run `npm install` and then start the application via `./bin.js`.
+To get started, simply clone this repository, run `npm install -g` and then start the application via `task-runner`.
 
 You may set the following environment variables to configure the application:
 
@@ -27,5 +27,3 @@ You may set the following environment variables to configure the application:
 
 ## TODO
 * Definable Intervals / Automatic running of tasks
-* Cleanups (especially scss)
-* Maybe caching of assets
