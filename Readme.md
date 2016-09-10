@@ -21,9 +21,9 @@ To get started, simply clone this repository, run `npm install -g` and then star
 
 You may set the following environment variables to configure the application:
 
-* `PORT`: The port to run the application on. Defaults to 3000
-* `TASKFILE`: The file from which to read the task definitions. Defaults to `tasks.json` in the current working directory.
-* `DATABASE`: The sqlite database file to save information about previous task invocations to. Defaults to `tasks.db` in the current working directory.
+* `TR_PORT`: The port to run the application on. Defaults to 3000
+* `TR_TASKFILE`: The file from which to read the task definitions. Defaults to `tasks.json` in the current working directory.
+* `TR_DATABASE`: The sqlite database file to save information about previous task invocations to. Defaults to `tasks.db` in the current working directory.
 
 ## TODO
 * Definable Intervals / Automatic running of tasks
