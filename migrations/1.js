@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = ({ schema }) => schema.createTable('invocations', table => {
 	table.increments();
 	table.string('task');

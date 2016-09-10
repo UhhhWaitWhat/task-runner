@@ -1,3 +1,5 @@
+'use strict';
+
 const routes = require('./routes');
 const streams = require('./streams');
 const validate = require('./validate');

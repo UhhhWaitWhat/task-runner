@@ -42,7 +42,7 @@ export default new Vuex.Store({
 		},
 
 		selectTask: (state, id) => {
-			let activeTask = state.tasks.find(t => t.active)
+			let activeTask = state.tasks.find(t => t.active);
 
 			if(activeTask) {
 				activeTask.active = false;
@@ -53,7 +53,7 @@ export default new Vuex.Store({
 		selectInvocation: (state, id) => {
 			let activeTask = state.tasks.find(t => t.active);
 
-			activeTask.invocations.forEach(i => i.active = false);
+			activeTask.invocations.forEach(i => { i.active = false; });
 			activeTask.invocations.find(t => t.id === id).active = true;
 		},
 
@@ -91,7 +91,7 @@ export default new Vuex.Store({
 	},
 
 	actions: {
-		loadTasks: ({ commit, dispatch, state }) => {
+		loadTasks: ({ commit, dispatch }) => {
 			return fetch('/api/tasks')
 				.then(res => res.json())
 				.then(tasks => {
@@ -161,7 +161,7 @@ export default new Vuex.Store({
 			return dispatch('subscribeSocket');
 		},
 
-		startInvocation: ({ dispatch }, taskId) => {
+		startInvocation: ({ commit, dispatch }, taskId) => {
 			return fetch('/api/invocation', {
 				headers: { 'Content-Type': 'application/json' },
 				method: 'POST',

@@ -1,3 +1,5 @@
+'use strict';
+
 const ws = require('ws');
 const koa = require('koa');
 const http = require('http');

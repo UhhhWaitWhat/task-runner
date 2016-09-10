@@ -9,6 +9,10 @@
     "name": "Florian Albertz",
     "url": "https://github.com/PaulAvery/"
   },
+  "scripts": {
+    "test": "eslint .",
+    "start": "./bin.js"
+  },
   "dependencies": {
     "co": "^4.6.0",
     "knex": "^0.11.10",
@@ -28,5 +32,8 @@
     "vue": "^2.0.0-rc.3",
     "vuex": "^2.0.0-rc.5",
     "ws": "^1.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^3.5.0"
   }
 }

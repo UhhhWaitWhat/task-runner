@@ -1,3 +1,5 @@
+'use strict';
+
 const route = require('koa-route');
 
 module.exports = (tasks, server) => {

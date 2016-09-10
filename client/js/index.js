@@ -6,6 +6,7 @@ import store from './store';
 document.addEventListener('DOMContentLoaded', function ready() {
 	document.removeEventListener('DOMContentLoaded', ready);
 
+	// eslint-disable-next-line no-new
 	new Vue({
 		store,
 		el: '#app',
