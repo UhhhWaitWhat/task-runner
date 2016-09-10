@@ -62,7 +62,7 @@ module.exports = compose([
 	}),
 	route.get('/js', function* () {
 		this.type = 'application/javascript';
-		this.body = yield js();
+		this.body = '\'use strict\';\n' + (yield js());
 	}),
 	route.get('/css', function* () {
 		this.type = 'text/css';
